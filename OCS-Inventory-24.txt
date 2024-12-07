@@ -1,0 +1,51 @@
+OCS Inventory NG Setup on Ubuntu
+
+1. System Update & Package Installation
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install apache2 mysql-server php php-mysql libapache2-mod-php php-xml php-zip php-curl php-cli php-gd php-mbstring wget unzip build-essential perl libdbi-perl libdbd-mysql-perl libapache2-mod-perl2 libapache-dbi-perl libxml-simple-perl libnet-ip-perl libarchive-zip-perl libmojolicious-perl libswitch-perl libplack-perl -y
+sudo cpan Apache::DBI XML::Simple Net::IP Archive::Zip Mojolicious::Lite Switch Plack::Handler
+
+===
+2. Create MySQL Database
+
+sudo mysql
+CREATE DATABASE ocs_db;
+CREATE USER ocs_user@localhost IDENTIFIED BY 'password';
+GRANT ALL ON ocs_db.* TO ocs_user@localhost;
+FLUSH PRIVILEGES;
+exit
+===
+3. Download and Extract OCS Inventory
+
+OCS Inventory Link:  : https://ocsinventory-ng.org/?page_id=1548&lang=en
+
+wget https://github.com/OCSInventory-NG/OCSInventory-Server/releases/download/2.9/OCSNG_UNIX_SERVER-2.9.tar.gz
+tar -xvzf OCSNG_UNIX_SERVER-2.9.tar.gz
+cd OCSNG_UNIX_SERVER-2.9
+====
+4. Configure OCS Setup
+
+sudo vi setup.sh
+# Update DB_SERVER_USER and DB_SERVER_PASSWORD
+sudo ./setup.sh
+
+===
+5. Apache Configuration
+
+cd /etc/apache2/conf-available/
+# Create symlink as required
+sudo chown -R www-data:www-data /var/lib/ocsinventory-reports
+sudo systemctl restart apache2
+===
+
+6. Final Setup Access the OCS setup via:
+
+http://Server_ip/ocsreports/install.php
+
+===
+Login:
+
+    Username: admin
+    Password: admin
+
