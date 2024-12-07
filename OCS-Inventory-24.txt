@@ -20,9 +20,9 @@ exit
 
 OCS Inventory Link:  : https://ocsinventory-ng.org/?page_id=1548&lang=en
 
-wget https://github.com/OCSInventory-NG/OCSInventory-Server/releases/download/2.9/OCSNG_UNIX_SERVER-2.9.tar.gz
-tar -xvzf OCSNG_UNIX_SERVER-2.9.tar.gz
-cd OCSNG_UNIX_SERVER-2.9
+wget https://github.com/OCSInventory-NG/OCSInventory-ocsreports/releases/download/2.12.3/OCSNG_UNIX_SERVER-2.12.3.tar.gz
+tar -xvzf OCSNG_UNIX_SERVER-2.12.3.tar.gz
+cd OCSNG_UNIX_SERVER-2.12.3
 ====
 4. Configure OCS Setup
 
@@ -35,6 +35,11 @@ sudo ./setup.sh
 
 cd /etc/apache2/conf-available/
 # Create symlink as required
+
+sudo ln -s /etc/apache2/conf-available/ocsinventory-reports.conf /etc/apache2/conf-enabled/ocsinventory-reports.conf
+sudo ln -s /etc/apache2/conf-available/z-ocsinventory-server.conf /etc/apache2/conf-enabled/z-ocsinventory-server.conf
+sudo ln -sf /etc/apache2/conf-available/zz-ocsinventory-restapi.conf /etc/apache2/conf-enabled/zz-ocsinventory-restapi.conf
+
 sudo chown -R www-data:www-data /var/lib/ocsinventory-reports
 sudo systemctl restart apache2
 ===
@@ -48,4 +53,11 @@ Login:
 
     Username: admin
     Password: admin
+
+# increass database size:
+
+sudo vi /etc/php/8.3/apache2/php.ini
+
+upload_max_filesize = 2048M
+post_max_size = 3000M
 
